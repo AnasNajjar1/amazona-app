@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from '../../node_modules/axios/index';
 import { detailsProduct, updateProduct } from '../actions/product';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
@@ -17,11 +18,17 @@ const ProductEditScreen = (props) => {
     const [brand, setBrand] = useState('');
     const [description, setDescription] = useState('');
 
+    const [loadingUpload, setLoadingUpload] = useState(false);
+    const [errorUpload, setErrorUpload] = useState('');
+
     const productDetails = useSelector(state => state.productDetails);
     const { loading, error, product } = productDetails;
 
     const productUpdate = useSelector(state => state.productUpdate);
     const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate;
+
+    const userSignin = useSelector(state => state.userSignin);
+    const { userInfo } = userSignin;
 
     const dispatch = useDispatch();
 
@@ -56,7 +63,30 @@ const ProductEditScreen = (props) => {
             countInStock,
             description 
         }));
-    }
+    };
+
+
+    const uploadFileHandler = async (e) => {
+        const file = e.target.files[0];
+        const bodyFormData = new FormData();
+        bodyFormData.append('image', file);
+        setLoadingUpload(true);
+
+        try {
+            const { data } = await axios.post('/api/uploads', bodyFormData, {
+                headers: { 
+                    'Content-Type' :  'multipart/form-data',
+                    Authorization: `Bearer ${userInfo.token}`
+                }
+            });
+            setImage(data);
+            setLoadingUpload(false);
+        } catch (error) {
+            setErrorUpload(error.message);
+            setLoadingUpload(false);
+        }
+        
+    };
 
     return (
         <div>
@@ -81,6 +111,12 @@ const ProductEditScreen = (props) => {
                         <div>
                             <label htmlFor="image">Image</label>
                             <input id="image" type="text" placeholder="Enter Image" value={image} onChange={(e) => setImage(e.target.value)} />
+                        </div>
+                        <div>
+                            <label htmlFor="imageFile">Image File</label>
+                            <input type="file" id="imageFile" label="Choose Image" onChange={uploadFileHandler} />
+                            { loadingUpload && <LoadingBox /> }
+                            { errorUpload && <MessageBox variant="danger">{errorUpload}</MessageBox> }
                         </div>
                         <div>
                             <label htmlFor="category">Category</label>
