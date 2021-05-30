@@ -29,9 +29,11 @@ const OrderScreen = (props) => {
 
     const dispatch = useDispatch();
 
+    const url = 'https://amazona2021.herokuapp.com';
+
     useEffect(() => {
         const addPaypalScript = async () => {
-            const { data } = axios.get('/api/config/paypal');
+            const { data } = axios.get(`${url}/api/config/paypal`);
             const script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;

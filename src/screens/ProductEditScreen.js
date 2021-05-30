@@ -10,6 +10,8 @@ const ProductEditScreen = (props) => {
 
     const productId = props.match.params.id;
 
+    const url = 'https://amazona2021.herokuapp.com';
+
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [image, setImage] = useState('');
@@ -73,7 +75,7 @@ const ProductEditScreen = (props) => {
         setLoadingUpload(true);
 
         try {
-            const { data } = await axios.post('/api/uploads', bodyFormData, {
+            const { data } = await axios.post(`${url}/api/uploads`, bodyFormData, {
                 headers: { 
                     'Content-Type' :  'multipart/form-data',
                     Authorization: `Bearer ${userInfo.token}`

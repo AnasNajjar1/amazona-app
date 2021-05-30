@@ -1,12 +1,13 @@
 import axios from "axios";
 import { PRODUCT_CREATE_FAILURE, PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_SUCCESS, PRODUCT_DELETE_FAILURE, PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_SUCCESS, PRODUCT_DETAILS_FAILURE, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_LIST_FAILURE, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS, PRODUCT_UPDATE_FAILURE, PRODUCT_UPDATE_REQUEST, PRODUCT_UPDATE_SUCCESS } from "../constants/productConstants"
 
+const url = 'https://amazona2021.herokuapp.com';
 export const listProducts = () => async (dispatch) => {
     dispatch({
         type: PRODUCT_LIST_REQUEST
     });
     try {
-        const { data } = await axios.get('/api/products');
+        const { data } = await axios.get(`${url}/api/products`);
         dispatch({
             type: PRODUCT_LIST_SUCCESS,
             payload: data
@@ -22,7 +23,7 @@ export const listProducts = () => async (dispatch) => {
 export const detailsProduct = (productId) => async (dispatch) => {
     dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
     try {
-        const { data } = await axios.get(`/api/products/${productId}`);
+        const { data } = await axios.get(`${url}/api/products/${productId}`);
         dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
     } catch (error) {
         dispatch({ 
@@ -38,7 +39,7 @@ export const createProduct = () => async (dispatch, getState) =>  {
     const { userSignin: { userInfo } } = getState();
 
     try {
-        const { data } = await axios.post('/api/products', {}, {
+        const { data } = await axios.post(`${url}/api/products`, {}, {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`
             }
@@ -56,7 +57,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
     const { userSignin: { userInfo } } = getState();
 
     try {
-        const { data }  = await axios.put(`/api/products/${product._id}`, product, {
+        const { data }  = await axios.put(`${url}/api/products/${product._id}`, product, {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`
             }
@@ -74,7 +75,7 @@ export const deleteProduct = (productId) => async (dispatch, getState) => {
     const { userSignin: { userInfo } } = getState();
 
     try {
-        const { data } = await axios.delete(`/api/products/${productId}`, {
+        const { data } = await axios.delete(`${url}/api/products/${productId}`, {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`
             }
