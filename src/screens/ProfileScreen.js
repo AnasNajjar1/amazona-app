@@ -12,36 +12,35 @@ const ProfileScreen = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
+    const dispatch = useDispatch();
+   
+
     const userSignin = useSelector(state => state.userSignin);
     const { userInfo } = userSignin;
     const userDetails = useSelector(state => state.userDetails);
     const { loading, error, user } = userDetails;
-    console.log(userInfo._id);
     const userUpdateProfile = useSelector(state => state.userUpdateProfile);
     const { success: successUpdate, error: errorUpdate, loading: loadingUpdate } = userUpdateProfile;
-    const dispatch = useDispatch();
-
-    const submitHandler = (e) => {
-        e.preventDefault();
-
-        if(password!==confirmPassword) {
-            alert('Password and Confirmed Password are not matched');
-        } else if(name==='' || email === '') {
-            alert('Empty fields');
-         } else {
-            dispatch(updateUserProfile({ userId: user._id, name, email, password }));
-        }
-    }
-
+    
     useEffect(() => {
-        if(!user) {
+        if(JSON.stringify(user) === '{}' || (userInfo.name !== user.name) || (userInfo.email !== user.email)) {
             dispatch({ type: USER_UPDATE_PROFILE_RESET });
             dispatch(detailsUser(userInfo._id));
         } else {
             setName(user.name);
             setEmail(user.email);
         }
-    }, [dispatch, userInfo._id, user]);
+    }, [dispatch, user, userInfo]);
+    const submitHandler = (e) => {
+        e.preventDefault();
+
+        if(password!==confirmPassword) {
+            alert('Password and Confirmed Password are not matched');
+        } else {
+            dispatch(updateUserProfile({ userId: userInfo.id, name, email, password }));
+        }
+    };
+
 
     return (
         <div>
@@ -67,7 +66,7 @@ const ProfileScreen = () => {
                         </div>
                         <div>
                             <label htmlFor="password">Password</label>
-                            <input id="password" type="text" placeholder="Enter Password" value={user.password} onChange={(e) => setPassword(e.target.value)} />
+                            <input id="password" type="text" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
                         <div>
                             <label htmlFor="confirmPassword">Confirm Password</label>
