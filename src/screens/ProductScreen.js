@@ -10,7 +10,7 @@ const ProductScreen = (props) => {
 
     const productDetails = useSelector(state => state.productDetails);
     const productId = props.match.params.id;
-    const [qty, setQty] = useState(0);
+    const [qty, setQty] = useState(1);
     const { loading, product, error } = productDetails;
     const dispatch = useDispatch();
 

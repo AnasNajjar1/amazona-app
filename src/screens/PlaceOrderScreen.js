@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { createOrder } from '../actions/order';
+import { createOrder, detailsOrder } from '../actions/order';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { ORDER_CREATE_RESET } from '../constants/orderConstants';
 import LoadingBox from '../components/LoadingBox';
@@ -20,8 +20,8 @@ const PlaceOrderScreen = (props) => {
 
     const toPrice = (num) => Number(num.toFixed(2)) // 5.123 => "5.12" => 5.12
     cart.itemsPrice = toPrice(cart.cartItems.reduce((acc, curr) => acc+(curr.qty*curr.price), 0));
-    cart.shippingPrice = cart.itemsPrice>100? toPrice(0) : toPrice(10);
-    cart.taxPrice = toPrice(0.15 * cart.itemsPrice);
+    cart.shippingPrice = cart.itemsPrice<100? toPrice(0) : toPrice(cart.itemsPrice*0.1);
+    cart.taxPrice = toPrice(0.05 * cart.itemsPrice);
     cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
     const dispatch = useDispatch();
@@ -32,10 +32,11 @@ const PlaceOrderScreen = (props) => {
 
     useEffect(() => {
         if(success) {
+            dispatch(detailsOrder(order._id));
             props.history.push(`/order/${order._id}`);
             dispatch({ type: ORDER_CREATE_RESET });
         }
-    }, [success]);
+    }, [dispatch, order, props.history, success]);
 
     return (
         <div>

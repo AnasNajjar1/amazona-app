@@ -16,6 +16,7 @@ const ProfileScreen = () => {
     const { userInfo } = userSignin;
     const userDetails = useSelector(state => state.userDetails);
     const { loading, error, user } = userDetails;
+    console.log(userInfo._id);
     const userUpdateProfile = useSelector(state => state.userUpdateProfile);
     const { success: successUpdate, error: errorUpdate, loading: loadingUpdate } = userUpdateProfile;
     const dispatch = useDispatch();
@@ -25,7 +26,9 @@ const ProfileScreen = () => {
 
         if(password!==confirmPassword) {
             alert('Password and Confirmed Password are not matched');
-        } else {
+        } else if(name==='' || email === '') {
+            alert('Empty fields');
+         } else {
             dispatch(updateUserProfile({ userId: user._id, name, email, password }));
         }
     }
@@ -68,7 +71,7 @@ const ProfileScreen = () => {
                         </div>
                         <div>
                             <label htmlFor="confirmPassword">Confirm Password</label>
-                            <input id="confirmPassword" type="text" placeholder="Confirm Password" onChange={(e) => setConfirmPassword(e.target.value)} />
+                            <input id="confirmPassword" type="text" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                         </div>
                         <div>
                             <label/>

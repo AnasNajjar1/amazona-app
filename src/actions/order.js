@@ -24,7 +24,6 @@ export const createOrder = (order) => async (dispatch, getState) => {
         });
     }
 };
-
 export const detailsOrder = (orderId) => async (dispatch, getState) => {
     dispatch({ type: ORDER_DETAILS_REQUEST, payload: orderId });
     const {

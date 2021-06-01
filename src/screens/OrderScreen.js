@@ -4,7 +4,6 @@ import axios from 'axios';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { Link } from 'react-router-dom';
 import { deliverOrder, detailsOrder, payOrder } from '../actions/order';
-import CheckoutSteps from '../components/CheckoutSteps';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from '../constants/orderConstants';
@@ -21,6 +20,8 @@ const OrderScreen = (props) => {
     const orderDetails = useSelector(state => state.orderDetails);
     const { loading, order, error } = orderDetails;
 
+    console.log(order);
+
     const orderPay = useSelector(state => state.orderPay);
     const { loading: loadingPay, error: errorPay, success: successPay } = orderPay;
 
@@ -31,18 +32,18 @@ const OrderScreen = (props) => {
 
     const url = 'https://amazona2021.herokuapp.com';
 
+    const addPaypalScript = async () => {
+        const { data } = axios.get(`${url}/api/config/paypal`);
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
+        script.async = true;
+        script.onload = () => {
+            setSdkReady(true);
+        };
+        document.body.appendChild(script);
+    };
     useEffect(() => {
-        const addPaypalScript = async () => {
-            const { data } = axios.get(`${url}/api/config/paypal`);
-            const script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
-            script.async = true;
-            script.onload = () => {
-                setSdkReady(true);
-            };
-            document.body.appendChild(script);
-        }
         if(!order || successPay || successDeliver || (order && order._id !== orderId)) {
             dispatch({ type: ORDER_PAY_RESET });
             dispatch({ type: ORDER_DELIVER_RESET });
@@ -57,7 +58,7 @@ const OrderScreen = (props) => {
             }
         }
         
-    }, [orderId, sdkReady, order, successPay, success, dispatch]);
+    }, [orderId, sdkReady, order, successPay, successDeliver]);
 
     const successPaymentHandler = (paymentResult) => {
         dispatch(payOrder(order, paymentResult));
@@ -79,14 +80,14 @@ const OrderScreen = (props) => {
                             <div className="card card-body">
                                 <h2>Shipping</h2>
                                 <p>
-                                    <strong>Name:</strong> {order.shippingAddress.fullName}<br/>
-                                    <strong>Address:</strong> {order.shippingAddress.address},
-                                    {order.shippingAddress.city}, {order.shippingAddress.postalCode},
-                                    {order.shippingAddress.country}
+                                    <strong>Name:</strong>{order?.shippingAddress?.fullName}<br/>
+                                    <strong>Address:</strong> {order?.shippingAddress?.address},
+                                    {order?.shippingAddress?.city}, {order?.shippingAddress?.postalCode},
+                                    {order?.shippingAddress?.country}
 
                                 </p>
                                 {order.isDelivered? 
-                                    <MessageBox variant="success">Delivered at {order.deliveredAt}</MessageBox> :
+                                    <MessageBox variant="success">Delivered at {order?.deliveredAt}</MessageBox> :
                                     <MessageBox variant="danger">Not Delivered</MessageBox>
                                 }
                             </div>
@@ -108,7 +109,7 @@ const OrderScreen = (props) => {
                                 <h2>Order Items</h2>
                                 <ul>
                                     {
-                                        order.orderItems.map((item) => (
+                                        order && order.orderItems && order.orderItems.map((item) => (
                                             <li key={item.product}>
                                                 <div className="row">
                                                     <div>
@@ -138,25 +139,25 @@ const OrderScreen = (props) => {
                             <li>
                                 <div className="row">
                                     <div>Items</div>
-                                    <div>${order.itemsPrice.toFixed(2)}</div>
+                                    <div>${order?.itemsPrice?.toFixed(2)}</div>
                                 </div>
                             </li>
                             <li>
                                 <div className="row">
                                     <div>Shipping</div>
-                                    <div>${order.shippingPrice.toFixed(2)}</div>
+                                    <div>${order?.shippingPrice?.toFixed(2)}</div>
                                 </div>
                             </li>
                             <li>
                                 <div className="row">
                                     <div>Tax</div>
-                                    <div>${order.taxPrice.toFixed(2)}</div>
+                                    <div>${order?.taxPrice?.toFixed(2)}</div>
                                 </div>
                             </li>
                             <li>
                                 <div className="row">
                                     <div><strong>Order Total</strong></div>
-                                    <div><strong>${order.totalPrice.toFixed(2)}</strong></div>
+                                    <div><strong>${order?.totalPrice?.toFixed(2)}</strong></div>
                                 </div>
                             </li>
                             {
@@ -171,7 +172,7 @@ const OrderScreen = (props) => {
                                                     <LoadingBox />
                                                 )}
                                                 <PayPalButton 
-                                                    amount={order.totalPrice} 
+                                                    amount={order?.totalPrice} 
                                                     onSuccess={successPaymentHandler}
                                                 ></PayPalButton>
                                             </>
