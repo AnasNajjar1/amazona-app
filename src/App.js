@@ -4,6 +4,7 @@ import { Link, BrowserRouter, Route } from 'react-router-dom';
 import { signout } from './actions/user';
 import AdminRoute from './components/AdminRoute';
 import PrivateRoute from './components/PrivateRoute';
+import { USER_REGISTER_RESET } from './constants/userConstants';
 import CartScreen from './screens/CartScreen';
 import HomeScreen from './screens/HomeScreen';
 import OrderHistoryScreen from './screens/OrderHistoryScreen';

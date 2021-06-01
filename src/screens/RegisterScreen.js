@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { register } from '../actions/user';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import { USER_REGISTER_RESET } from '../constants/userConstants';
 
 const RegisterScreen = (props) => {
 
@@ -27,6 +28,8 @@ const RegisterScreen = (props) => {
             dispatch(register(name, email, password));
         }
     }
+
+    console.log(userInfo);
 
     useEffect(() => {
         if(userInfo) {
