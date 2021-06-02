@@ -26,6 +26,8 @@ const ProductEditScreen = (props) => {
     const productDetails = useSelector(state => state.productDetails);
     const { loading, error, product } = productDetails;
 
+    console.log(product._id);
+
     const productUpdate = useSelector(state => state.productUpdate);
     const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate;
 
@@ -34,8 +36,11 @@ const ProductEditScreen = (props) => {
 
     const dispatch = useDispatch();
 
+    console.log(product);
+
     useEffect(() => {
         if(successUpdate) {
+            dispatch({ type: PRODUCT_UPDATE_RESET });
             props.history.push('/productlist');
         }
         if(!product || (product._id !== productId) || successUpdate) {
@@ -50,7 +55,7 @@ const ProductEditScreen = (props) => {
             setBrand(product.brand);
             setDescription(product.description);
         }
-    }, [product, dispatch, productId]);
+    }, [product, dispatch, productId, successUpdate]);
 
     const submitHandler = (e) => {
         e.preventDefault();

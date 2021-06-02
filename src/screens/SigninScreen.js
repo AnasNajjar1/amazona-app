@@ -22,8 +22,6 @@ const SigninScreen = (props) => {
         dispatch(signin(email, password));
     }
 
-    console.log(userInfo);
-
     useEffect(() => {
         if(userInfo) {
             props.history.push(redirect);

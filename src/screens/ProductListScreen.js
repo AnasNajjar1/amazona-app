@@ -18,8 +18,9 @@ const ProductListScreen = (props) => {
 
     const dispatch = useDispatch();
 
+    console.log(createdProduct);
     useEffect(() => {
-        if(successCreate) {
+        if(successCreate && createdProduct._id) {
             dispatch({ type: PRODUCT_CREATE_RESET });
             props.history.push(`/product/${createdProduct._id}/edit`);
         }
@@ -70,6 +71,7 @@ const ProductListScreen = (props) => {
                         <tbody>
                             {products.map((product) => (
                                 <tr key={product._id}>
+                                    <td>{product._id}</td>
                                     <td>{product.name}</td>
                                     <td>{product.price}</td>
                                     <td>{product.category}</td>
