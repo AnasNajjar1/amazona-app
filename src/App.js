@@ -4,7 +4,6 @@ import { Link, BrowserRouter, Route } from 'react-router-dom';
 import { signout } from './actions/user';
 import AdminRoute from './components/AdminRoute';
 import PrivateRoute from './components/PrivateRoute';
-import { USER_REGISTER_RESET } from './constants/userConstants';
 import CartScreen from './screens/CartScreen';
 import HomeScreen from './screens/HomeScreen';
 import OrderHistoryScreen from './screens/OrderHistoryScreen';
@@ -19,6 +18,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ShippingAddressScreen from './screens/ShippingAddressScreen';
 import SigninScreen from './screens/SigninScreen';
+import UserEditScreen from './screens/UserEditScreen';
 import UserListScreen from './screens/UserListScreen';
 
 function App() {
@@ -109,6 +109,7 @@ function App() {
           <Route path="/order/:id" component={OrderScreen} />
           <Route path="/orderhistory" component={OrderHistoryScreen} />
           <PrivateRoute path="/profile" component={ProfileScreen}></PrivateRoute>
+          <AdminRoute path="/user/:id/edit" component={UserEditScreen}></AdminRoute>
           <AdminRoute path="/userlist" component={UserListScreen}></AdminRoute>
           <AdminRoute path="/productlist" component={ProductListScreen}></AdminRoute>
           <AdminRoute path="/orderlist" component={OrderListScreen}></AdminRoute>
