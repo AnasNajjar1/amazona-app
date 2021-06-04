@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { detailsUser, updateUser } from '../actions/user';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants';
+import { USER_UPDATE_RESET } from '../constants/userConstants';
 
 const UserEditScreen = (props) => {
     
@@ -24,7 +24,7 @@ const UserEditScreen = (props) => {
 
     useEffect(() => {
         if(successUpdate) {
-            dispatch({ type: USER_UPDATE_PROFILE_RESET });
+            dispatch({ type: USER_UPDATE_RESET });
             props.history.push('/userlist');
         }
         if(!user) {
