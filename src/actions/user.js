@@ -1,5 +1,5 @@
 import axios from "axios";
-import { USER_DETAILS_FAILURE, USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_LIST_REQUEST, USER_LIST_SUCCESS, USER_LIST_FAILURE, USER_REGISTER_FAILURE, USER_REGISTER_REQUEST, USER_REGISTER_RESET, USER_REGISTER_SUCCESS, USER_SIGNIN_FAILURE, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_UPDATE_PROFILE_FAILURE, USER_UPDATE_PROFILE_REQUEST, USER_UPDATE_PROFILE_SUCCESS, USER_DELETE_REQUEST, USER_DELETE_FAILURE, USER_DELETE_SUCCESS, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAILURE } from "../constants/userConstants"
+import { USER_DETAILS_FAILURE, USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_LIST_REQUEST, USER_LIST_SUCCESS, USER_LIST_FAILURE, USER_REGISTER_FAILURE, USER_REGISTER_REQUEST, USER_REGISTER_RESET, USER_REGISTER_SUCCESS, USER_SIGNIN_FAILURE, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_UPDATE_PROFILE_FAILURE, USER_UPDATE_PROFILE_REQUEST, USER_UPDATE_PROFILE_SUCCESS, USER_DELETE_REQUEST, USER_DELETE_FAILURE, USER_DELETE_SUCCESS, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAILURE, USER_TOPSELLERS_LIST_REQUEST, USER_TOPSELLERS_LIST_SUCCESS, USER_TOPSELLERS_LIST_FAILURE } from "../constants/userConstants"
 
 const url = 'https://amazona2021.herokuapp.com';
 
@@ -130,5 +130,17 @@ export const updateUser = (user) => async (dispatch, getState) => {
         const message = error.response && error.response.data.message ?
                         error.response.data.message : error.message;
         dispatch({ type: USER_UPDATE_FAILURE, payload: message });
+    }
+};
+
+export const listTopSellers = () => async (dispatch) => {
+    dispatch({ type: USER_TOPSELLERS_LIST_REQUEST });
+    try {
+        const { data } = await axios.get(`${url}/api/top-sellers`);
+        dispatch({ type: USER_TOPSELLERS_LIST_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ?
+                        error.response.data.message : error.message;
+        dispatch({ type: USER_TOPSELLERS_LIST_FAILURE, payload: message });
     }
 };
