@@ -80,12 +80,12 @@ export const listOrderMine = () => async (dispatch, getState) => {
     }
 };
 
-export const listOrders = ({ seller = '' }) => async (dispatch, getState) => {
+export const listOrders = () => async (dispatch, getState) => {
     dispatch({ type: ORDER_LIST_REQUEST });
     const { userSignin: { userInfo } } = getState();
 
     try {
-        const { data } = await axios.get(`${url}/api/orders?seller=${seller}`, {
+        const { data } = await axios.get(`${url}/api/orders`, {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`
             }
