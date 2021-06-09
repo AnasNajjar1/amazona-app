@@ -7,6 +7,7 @@ import { deliverOrder, detailsOrder, payOrder } from '../actions/order';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from '../constants/orderConstants';
+import { API } from '../urlConfig';
 
 const OrderScreen = (props) => {
     
@@ -30,10 +31,8 @@ const OrderScreen = (props) => {
 
     const dispatch = useDispatch();
 
-    const url = 'https://amazona2021.herokuapp.com';
-
     const addPaypalScript = async () => {
-        const { data } = axios.get(`${url}/api/config/paypal`);
+        const { data } = axios.get(`${API}/api/config/paypal`);
         const script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;

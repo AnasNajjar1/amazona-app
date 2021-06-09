@@ -11,6 +11,9 @@ const ProfileScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [sellerName, setSellerName] = useState('');
+    const [sellerLogo, setSellerLogo] = useState('');
+    const [sellerDescription, setSellerDescription] = useState('');
 
     const dispatch = useDispatch();
    
@@ -21,23 +24,32 @@ const ProfileScreen = () => {
     const { loading, error, user } = userDetails;
     const userUpdateProfile = useSelector(state => state.userUpdateProfile);
     const { success: successUpdate, error: errorUpdate, loading: loadingUpdate } = userUpdateProfile;
-    
+
+    const userId = userInfo._id? userInfo._id : userInfo.id;
+
+    console.log(userInfo);
     useEffect(() => {
-        if(JSON.stringify(user) === '{}' || (userInfo.name !== user.name) || (userInfo.email !== user.email)) {
+        if(JSON.stringify(user) === '{}' || (userInfo.name !== user.name) || (userInfo.email !== user.email) || successUpdate) {
             dispatch({ type: USER_UPDATE_PROFILE_RESET });
-            dispatch(detailsUser(userInfo._id));
+            dispatch(detailsUser(userId));
         } else {
             setName(user.name);
             setEmail(user.email);
+            if(user.seller) {
+                console.log(user.seller);
+                setSellerName(user.seller.name);
+                setSellerLogo(user.seller.logo);
+                setSellerDescription(user.seller.description);
+            }
         }
-    }, [dispatch, user, userInfo]);
+    }, [dispatch, user, userInfo, successUpdate]);
     const submitHandler = (e) => {
         e.preventDefault();
 
         if(password!==confirmPassword) {
             alert('Password and Confirmed Password are not matched');
         } else {
-            dispatch(updateUserProfile({ userId: userInfo.id, name, email, password }));
+            dispatch(updateUserProfile({ userId: userInfo.id, name, email, password, sellerName, sellerLogo, sellerDescription }));
         }
     };
 
@@ -72,6 +84,25 @@ const ProfileScreen = () => {
                             <label htmlFor="confirmPassword">Confirm Password</label>
                             <input id="confirmPassword" type="text" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                         </div>
+                        {
+                            user.isSeller && (
+                                <>
+                                    <h2>Seller</h2>
+                                    <div>
+                                        <label htmlFor="sellerName">Seller Name</label>
+                                        <input id="sellerName" type="text" placeholder="Enter Seller Name" value={sellerName} onChange={(e) => setSellerName(e.target.value)} />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="sellerLogo">Seller Logo</label>
+                                        <input id="sellerLogo" type="text" placeholder="Enter Seller Logo" value={sellerLogo} onChange={(e) => setSellerLogo(e.target.value)} />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="sellerDescription">Seller Description</label>
+                                        <input id="sellerDescription" type="text" placeholder="Enter Seller Description" value={sellerDescription} onChange={(e) => setSellerDescription(e.target.value)} />
+                                    </div>
+                                </>
+                            )
+                        }
                         <div>
                             <label/>
                             <button className="primary" type="submit">

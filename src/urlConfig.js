@@ -1,0 +1,1 @@
+export const API = 'https://amazona2021.herokuapp.com';

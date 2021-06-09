@@ -7,6 +7,8 @@ import { PRODUCT_CREATE_RESET, PRODUCT_DELETE_RESET } from '../constants/product
 
 const ProductListScreen = (props) => {
 
+    const sellerMode = props.match.path.indexOf('/seller') >= 0; 
+
     const productList = useSelector(state => state.productList);
     const { loading, error, products } = productList;
 
@@ -15,6 +17,9 @@ const ProductListScreen = (props) => {
 
     const productDelete = useSelector(state => state.productDelete);
     const { loading: loadingDelete, error: errorDelete, success: successDelete } = productDelete;
+
+    const userSignin = useSelector(state => state.userSignin);
+    const { userInfo } = userSignin;
 
     const dispatch = useDispatch();
 
@@ -27,7 +32,7 @@ const ProductListScreen = (props) => {
         if(successDelete) {
             dispatch({ type: PRODUCT_DELETE_RESET });
         }
-        dispatch(listProducts());
+        dispatch(listProducts({ seller: sellerMode? userInfo._id : '' }));
     }, [dispatch, createdProduct, successCreate, successDelete]);
 
     const deleteHandler = (product) => {
