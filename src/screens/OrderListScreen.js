@@ -7,6 +7,8 @@ import { ORDER_DELETE_RESET } from '../constants/orderConstants';
 
 const OrderListScreen = (props) => {
 
+    const sellerMode = props.match.path.indexOf('/seller') >= 0; 
+
     const dispatch = useDispatch();
     const orderList = useSelector(state => state.orderList);
     const { loading, error, orders } = orderList;
@@ -14,9 +16,14 @@ const OrderListScreen = (props) => {
     const orderDelete = useSelector(state => state.orderDelete);
     const { loading: loadingDelete, error: errorDelete, success: successDelete } = orderDelete;
 
+    const userSignin = useSelector(state => state.userSignin);
+    const { userInfo } = userSignin;
+
+    const userId = userInfo._id? userInfo._id : userInfo.id;
+
     useEffect(() => {
         dispatch({ type: ORDER_DELETE_RESET });
-        dispatch(listOrders());
+        dispatch(listOrders({ seller: sellerMode? userId : '' }));
     }, [dispatch, successDelete]);
 
     const deleteHandler = (order) => {

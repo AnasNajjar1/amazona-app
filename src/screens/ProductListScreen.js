@@ -21,6 +21,8 @@ const ProductListScreen = (props) => {
     const userSignin = useSelector(state => state.userSignin);
     const { userInfo } = userSignin;
 
+    const userId = userInfo._id? userInfo._id : userInfo.id;
+
     const dispatch = useDispatch();
 
     console.log(createdProduct);
@@ -32,7 +34,7 @@ const ProductListScreen = (props) => {
         if(successDelete) {
             dispatch({ type: PRODUCT_DELETE_RESET });
         }
-        dispatch(listProducts({ seller: sellerMode? userInfo._id : '' }));
+        dispatch(listProducts({ seller: sellerMode? userId : '' }));
     }, [dispatch, createdProduct, successCreate, successDelete]);
 
     const deleteHandler = (product) => {

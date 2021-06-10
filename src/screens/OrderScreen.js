@@ -67,6 +67,10 @@ const OrderScreen = (props) => {
         dispatch(deliverOrder(order._id));
     }
 
+    if(!userInfo) {
+        props.history.push('/signin');
+    }
+
     return loading? (<LoadingBox />):
     error? (<MessageBox variant="danger">{error}</MessageBox>) :
     (
