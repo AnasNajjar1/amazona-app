@@ -8,6 +8,7 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from '../constants/orderConstants';
 import { API } from '../urlConfig';
+import { signout } from '../actions/user';
 
 const OrderScreen = (props) => {
     
@@ -58,6 +59,7 @@ const OrderScreen = (props) => {
         }
         
     }, [orderId, sdkReady, order, successPay, successDeliver]);
+
 
     const successPaymentHandler = (paymentResult) => {
         dispatch(payOrder(order, paymentResult));

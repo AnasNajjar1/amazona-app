@@ -23,7 +23,7 @@ import SigninScreen from './screens/SigninScreen';
 import UserEditScreen from './screens/UserEditScreen';
 import UserListScreen from './screens/UserListScreen';
 
-function App() {
+function App(props) {
 
   const cart = useSelector(state => state.cart);
   const userSignin = useSelector(state => state.userSignin);
