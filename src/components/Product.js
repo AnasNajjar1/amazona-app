@@ -1,10 +1,13 @@
 import React from 'react';
 import Rating from './Rating';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Product = ({ product }) => {
 
-    console.log(product.seller._id);
+
+    const userSignin = useSelector(state => state.userSignin);
+    const { userInfo } = userSignin;
 
     return (
         <div key={product._id} className="card">
@@ -20,9 +23,9 @@ const Product = ({ product }) => {
                     <div className="price">
                         ${product.price}
                     </div>
-                    <div>
+                    { !userInfo?.isSeller  && (<div>
                         <Link to={`/seller/${product.seller?._id}`}>{product.seller?.seller?.name}</Link>
-                    </div>
+                    </div>)}
                 </div>
                 
             </div>

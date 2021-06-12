@@ -19,10 +19,15 @@ const SellerScreen = (props) => {
     const productList = useSelector(state => state.productList);
     const { loading: loadingProducts, error: errorProducts, products } = productList;
 
+    const userSignin = useSelector(state => state.userSignin);
+    const { userInfo } = userSignin;
+
+
+
     useEffect(() => {
         dispatch(detailsUser(sellerId));
         dispatch(listProducts({ seller: sellerId }));
-    }, []);
+    }, [dispatch, sellerId]);
 
     return (
         <div className="row top">
@@ -30,7 +35,7 @@ const SellerScreen = (props) => {
                 {
                     loading ? <LoadingBox /> :
                         error ? <MessageBox variant="danger">{error}</MessageBox> :
-                            (
+                            user.seller && (
                                 <ul className="card card-body">
                                     <li>
                                         <div className="row start">
@@ -45,9 +50,9 @@ const SellerScreen = (props) => {
                                     <li>
                                         <Rating rating={user.seller.rating} numReviews={user.seller.numReviews} ></Rating>
                                     </li>
-                                    <li>
+                                   { userInfo && !userInfo.isSeller && (<li>
                                         <a href={`mailto:${user.email}`}>Contact Seller</a>
-                                    </li>
+                                    </li>) }
                                     <li>
                                         {user.seller.description}
                                     </li>
