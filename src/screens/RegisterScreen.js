@@ -12,8 +12,9 @@ const RegisterScreen = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confimedPassword, setConfirmedPassword] = useState('');
+    const [isSeller, setIsSeller] = useState(false);
 
-    const redirect = props.location.search? props.location.search.split('=')[1] : '/';
+    const redirect = props.location.search ? props.location.search.split('=')[1] : '/';
 
     const userRegister = useSelector(state => state.userRegister);
     const { userInfo, loading, error } = userRegister;
@@ -22,17 +23,17 @@ const RegisterScreen = (props) => {
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        if(password !== confimedPassword) {
+        if (password !== confimedPassword) {
             alert('password and confirmed password are not identical');
         } else {
-            dispatch(register(name, email, password));
+            dispatch(register(name, email, password, isSeller));
         }
     }
 
     console.log(userInfo);
 
     useEffect(() => {
-        if(userInfo) {
+        if (userInfo) {
             props.history.push(redirect);
         }
     }, [userInfo, redirect]);
@@ -60,6 +61,10 @@ const RegisterScreen = (props) => {
                 <div>
                     <label htmlFor="confirmPassword">Confirm Password</label>
                     <input type="password" id="confirmPassword" placeholder="Confirm password" required onChange={e => setConfirmedPassword(e.target.value)} />
+                </div>
+                <div>
+                    <label htmlFor="isSeller">Is Seller</label>
+                    <input id="isSeller" type="checkbox" checked={isSeller} onChange={(e) => setIsSeller(e.target.checked)} />
                 </div>
                 <div>
                     <label />

@@ -180,11 +180,14 @@ img.small {
 
 img.medium {
   max-width: 29rem;
-  width: 100%;
+  max-height: 29rem;
+  width: 29rem;
+  height: 29rem;
 }
 
 img.large {
-  width: 100%;
+  width: 40rem;
+  height: 40rem;
 }
 
 

@@ -2,6 +2,8 @@ import { PRODUCT_CREATE_FAILURE, PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_RESET, P
 
 const productListInitState = {
     products: [],
+    pages: null,
+    page: null,
     loading: false,
     error: null
 }
@@ -37,7 +39,7 @@ export const productListReducer = (state = productListInitState, action) => {
         case PRODUCT_LIST_REQUEST: 
             return {...state, loading : true};
         case PRODUCT_LIST_SUCCESS:
-            return {...state, loading: false, products: action.payload};
+            return {...state, loading: false, products: action.payload.products };
         case PRODUCT_LIST_FAILURE:
             return {...state, loading: false, error: action.payload};
         default:

@@ -18,10 +18,10 @@ export const signin = (email , password) => async (dispatch) => {
     }
 };
 
-export const register = (name, email , password) => async (dispatch) => {
+export const register = (name, email , password, isSeller) => async (dispatch) => {
     dispatch({ type: USER_REGISTER_REQUEST, payload: { name, email, password } });
     try {
-        const { data } = await axios.post(`${API}/api/users/register`, { name, email, password });
+        const { data } = await axios.post(`${API}/api/users/register`, { name, email, password, isSeller });
         dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
         dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
         localStorage.setItem('userInfo', JSON.stringify(data));

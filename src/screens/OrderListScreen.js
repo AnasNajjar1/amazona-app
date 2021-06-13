@@ -66,7 +66,7 @@ const OrderListScreen = (props) => {
                                     <button type="button" className="small" onClick={() => {props.history.push(`/order/${order._id}`)}}>
                                         Details
                                     </button>
-                                    <button type="button" className="small" onClick={() => deleteHandler(order)}>Delete</button>
+                                    { userInfo.isAdmin && <button type="button" className="small" onClick={() => deleteHandler(order)}>Delete</button>}
                                 </td>
                              </tr> 
                           ))}

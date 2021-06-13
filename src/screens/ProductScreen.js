@@ -32,6 +32,8 @@ const ProductScreen = (props) => {
         props.history.push(`/cart/${productId}?qty=${qty}`);
     }
 
+    console.log(product);
+
     
 
     return (
@@ -72,7 +74,7 @@ const ProductScreen = (props) => {
                                             <>
                                                 Seller <h2>
                                                 <Link to={`/seller/${product.seller._id}`}>
-                                                    { product.seller.seller.name }
+                                                    { product.seller.name }
                                                 </Link>
                                                 </h2>
                                                 <Rating rating={product.seller.seller.rating} numReviews={product.seller.seller.numReviews}></Rating>
