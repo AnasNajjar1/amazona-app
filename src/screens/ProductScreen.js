@@ -19,6 +19,9 @@ const ProductScreen = (props) => {
     const productDetails = useSelector(state => state.productDetails);
     const { loading, product,  error } = productDetails;
 
+    const userSignin = useSelector(state => state.userSignin);
+    const { userInfo } = userSignin;
+
     useEffect(() => {
         if(JSON.stringify(product) === '{}' || JSON.stringify(product) !== '{}' && productId !== product._id) {
             dispatch(detailsProduct(productId));
@@ -97,7 +100,7 @@ const ProductScreen = (props) => {
                                         </div>
                                     </li>
                                     {
-                                        product.countInStock>0 && (
+                                       !userInfo?.isSeller && product.countInStock>0 && (
                                             <>
                                                 <li>
                                                     <div className="row">

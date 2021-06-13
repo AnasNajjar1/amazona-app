@@ -166,7 +166,7 @@ const OrderScreen = (props) => {
                                 </div>
                             </li>
                             {
-                                !order.isPaid && (
+                                !userInfo.isSeller && !order.isPaid && (
                                     <li>
                                         {!sdkReady? <LoadingBox /> : (
                                             <>

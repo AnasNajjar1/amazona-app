@@ -23,7 +23,7 @@ const Header = () => {
             <Link className="brand" to="/">amazona</Link>
           </div>
           <div>
-            {userInfo && !userInfo.isSeller && <Link to="/cart">Cart
+            {((userInfo && !userInfo.isSeller) || !userInfo) && <Link to="/cart">Cart
               {
                 cartItems.length > 0 && (
                   <span className="badge">{cartItems.length}</span>
