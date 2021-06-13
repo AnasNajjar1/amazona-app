@@ -8,7 +8,6 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from '../constants/orderConstants';
 import { API } from '../urlConfig';
-import { signout } from '../actions/user';
 
 const OrderScreen = (props) => {
     
@@ -166,7 +165,7 @@ const OrderScreen = (props) => {
                                 </div>
                             </li>
                             {
-                                !userInfo.isSeller && !order.isPaid && (
+                                !userInfo?.isSeller && !order.isPaid && (
                                     <li>
                                         {!sdkReady? <LoadingBox /> : (
                                             <>
@@ -185,7 +184,7 @@ const OrderScreen = (props) => {
                                     </li>
                                 )
                             }
-                            {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                            {userInfo?.isAdmin && order.isPaid && !order.isDelivered && (
                                 <li>
                                     { loadingDeliver && <LoadingBox /> }
                                     { errorDeliver && <MessageBox variant="danger">{errorDeliver}</MessageBox> }

@@ -21,7 +21,7 @@ const HomeScreen = (props) => {
 
     console.log(products);
 
-    if(userInfo && userInfo.isSeller) {
+    if(userInfo && userInfo.isSeller && !userInfo.isAdmin) {
         return (
             <>
                 { props.history.push(`/seller/${userId}`) }
