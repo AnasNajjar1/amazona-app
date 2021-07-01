@@ -70,7 +70,7 @@ const HomeScreen = (props) => {
                         error? 
                         <MessageBox variant="danger">{error}</MessageBox> :
                         <>
-                                {products.length == 0 && <MessageBox variant="danger">No Product Found</MessageBox>}
+                                    {products.length == 0 && <MessageBox variant="danger">No Product Found</MessageBox>}
                                     <div className="row center">
                                         {
                                             products.map(product => (

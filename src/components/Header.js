@@ -1,8 +1,9 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import { signout } from '../actions/user';
+import SearchBox from './SearchBox';
 
 const Header = () => {
 
@@ -21,6 +22,9 @@ const Header = () => {
         <header className="row">
           <div>
             <Link className="brand" to="/">amazona</Link>
+          </div>
+          <div>
+            <Route render={({ history }) => <SearchBox history={history}></SearchBox>}></Route>
           </div>
           <div>
             {((userInfo && !userInfo.isSeller) || !userInfo) && <Link to="/cart">Cart
