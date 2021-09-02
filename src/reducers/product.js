@@ -1,9 +1,13 @@
-import { PRODUCT_CREATE_FAILURE, PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_RESET, PRODUCT_CREATE_SUCCESS, PRODUCT_DELETE_FAILURE, PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_RESET, PRODUCT_DELETE_SUCCESS, PRODUCT_DETAILS_FAILURE, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_RESET, PRODUCT_DETAILS_SUCCESS, PRODUCT_LIST_FAILURE, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS, PRODUCT_UPDATE_FAILURE, PRODUCT_UPDATE_REQUEST, PRODUCT_UPDATE_RESET, PRODUCT_UPDATE_SUCCESS } from "../constants/productConstants";
+import { PRODUCT_CATEGORY_LIST_FAILURE, PRODUCT_CATEGORY_LIST_REQUEST, PRODUCT_CATEGORY_LIST_SUCCESS, PRODUCT_CREATE_FAILURE, PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_RESET, PRODUCT_CREATE_SUCCESS, PRODUCT_DELETE_FAILURE, PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_RESET, PRODUCT_DELETE_SUCCESS, PRODUCT_DETAILS_FAILURE, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_RESET, PRODUCT_DETAILS_SUCCESS, PRODUCT_LIST_FAILURE, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS, PRODUCT_REVIEW_CREATE_FAILURE, PRODUCT_REVIEW_CREATE_REQUEST, PRODUCT_REVIEW_CREATE_RESET, PRODUCT_REVIEW_CREATE_SUCCESS, PRODUCT_UPDATE_FAILURE, PRODUCT_UPDATE_REQUEST, PRODUCT_UPDATE_RESET, PRODUCT_UPDATE_SUCCESS } from "../constants/productConstants";
 
 const productListInitState = {
     products: [],
-    pages: null,
-    page: null,
+    loading: false,
+    error: null
+}
+
+const productCategoryListInitState = {
+    categories: [],
     loading: false,
     error: null
 }
@@ -22,6 +26,13 @@ const productCreateInitState = {
     error: null
 }
 
+const productReviewCreateInitState = {
+    review : {},
+    success: false,
+    loading: false,
+    error: null
+}
+
 const productUpdateInitState = {
     product : {},
     success: false,
@@ -34,18 +45,32 @@ const productDeleteInitState = {
     loading: false,
     error: null
 }
+
 export const productListReducer = (state = productListInitState, action) => {
     switch(action.type) {
         case PRODUCT_LIST_REQUEST: 
             return {...state, loading : true};
         case PRODUCT_LIST_SUCCESS:
-            return {...state, loading: false, products: action.payload.products };
+            return {...state, loading: false, products: action.payload.products, pages: action.payload.pages, page: action.payload.page };
         case PRODUCT_LIST_FAILURE:
             return {...state, loading: false, error: action.payload};
         default:
             return state;
     }
-}
+};
+
+export const productCategoryListReducer = (state = productCategoryListInitState, action) => {
+    switch(action.type) {
+        case PRODUCT_CATEGORY_LIST_REQUEST: 
+            return {...state, loading : true};
+        case PRODUCT_CATEGORY_LIST_SUCCESS:
+            return {...state, loading: false, categories: action.payload };
+        case PRODUCT_CATEGORY_LIST_FAILURE:
+            return {...state, loading: false, error: action.payload};
+        default:
+            return state;
+    }
+};
 
 export const productDetailsReducer = (state = productDetailsInitState, action) => {
     switch(action.type) {
@@ -105,4 +130,19 @@ export const productDeleteReducer = (state = productDeleteInitState, action) => 
         default: 
             return state;
     }
-}
+};
+
+export const productReviewCreateReducer = (state = productReviewCreateInitState, action) => {
+    switch(action.type) {
+        case PRODUCT_REVIEW_CREATE_REQUEST:
+            return { ...state, loading: true };
+        case PRODUCT_REVIEW_CREATE_SUCCESS:
+            return { ...state, loading: false, success: true, review: action.payload };
+        case PRODUCT_REVIEW_CREATE_FAILURE:
+            return { ...state, loading: false, error: action.payload };
+        case PRODUCT_REVIEW_CREATE_RESET:
+            return {};
+        default:
+            return state;
+    }
+};

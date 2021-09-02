@@ -5,7 +5,7 @@ import { Link, Route } from 'react-router-dom';
 import { signout } from '../actions/user';
 import SearchBox from './SearchBox';
 
-const Header = () => {
+const Header = ({ setSidebarIsOpen }) => {
 
     const cart = useSelector(state => state.cart);
     const userSignin = useSelector(state => state.userSignin);
@@ -21,6 +21,9 @@ const Header = () => {
     return (
         <header className="row">
           <div>
+            <button type="button" className="open-sidebar" onClick={() => setSidebarIsOpen(true)}>
+              <i className="fa fa-bars"></i>
+            </button>
             <Link className="brand" to="/">amazona</Link>
           </div>
           <div>
@@ -85,6 +88,9 @@ const Header = () => {
                   <ul className="dropdown-content">
                     <li>
                       <Link to="/dashboard">Dashboard</Link>
+                    </li>
+                    <li>
+                      <Link to="/categorylist">Categories</Link>
                     </li>
                     <li>
                       <Link to="/productlist">Products</Link>

@@ -1,83 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from '../../node_modules/axios/index';
-import { detailsProduct, updateProduct } from '../actions/product';
+import { detailsCategory, updateCategory } from '../actions/category';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
-import { API } from '../urlConfig';
+import { CATEGORY_UPDATE_RESET } from '../constants/categoryConstants';
 import { storage } from '../firebase';
-import { listCategories } from '../actions/category';
 
-const ProductEditScreen = (props) => {
+const CategoryEditScreen = (props) => {
 
-    const productId = props.match.params.id;
+    const categoryId = props.match.params.id;
 
     const [name, setName] = useState('');
-    const [price, setPrice] = useState('');
     const [fileImage, setFileImage] = useState(null);
     const [progress, setProgress] = useState(0);
     const [image, setImage] = useState('');
-    const [countInStock, setCountInStock] = useState('');
-    const [brand, setBrand] = useState('');
-    const [description, setDescription] = useState('');
-
-    const [category, setCategory] = useState(null);
 
     const [loadingUpload, setLoadingUpload] = useState(false);
     const [errorUpload, setErrorUpload] = useState('');
 
-    const productDetails = useSelector(state => state.productDetails);
-    const { loading, error, product } = productDetails;
+    const categoryDetails = useSelector(state => state.categoryDetails);
+    const { loading, error, category } = categoryDetails;
 
-    console.log(product._id);
+    console.log(category._id);
 
-    const categoryList = useSelector(state => state.categoryList);
-    const { loading: loadingCategory, error: errorCategory, categories } = categoryList;
-
-    const productUpdate = useSelector(state => state.productUpdate);
-    const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate;
+    const categoryUpdate = useSelector(state => state.categoryUpdate);
+    const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = categoryUpdate;
 
     const userSignin = useSelector(state => state.userSignin);
     const { userInfo } = userSignin;
 
     const dispatch = useDispatch();
 
-    console.log(product);
-
     useEffect(() => {
         if(successUpdate) {
-            dispatch({ type: PRODUCT_UPDATE_RESET });
-            props.history.push('/productlist');
+            dispatch({ type: CATEGORY_UPDATE_RESET });
+            props.history.push('/categorylist');
         }
-        if(!product || (product._id !== productId) || successUpdate) {
-            dispatch({ type: PRODUCT_UPDATE_RESET });
-            dispatch(detailsProduct(productId));
+        if(!category || (category._id !== categoryId) || successUpdate) {
+            dispatch({ type: CATEGORY_UPDATE_RESET });
+            dispatch(detailsCategory(categoryId));
         } else {
-            setName(product.name);
-            setPrice(product.price);
-            setImage(product.image);
-            setCategory(product.category._id);
-            setCountInStock(product.countInStock);
-            setBrand(product.brand);
-            setDescription(product.description);
+            setName(category.name);
+            setImage(category.image);
         }
+    }, [category, dispatch, categoryId, successUpdate]);
 
-        dispatch(listCategories());
-    }, [product, dispatch, productId, successUpdate]);
+    console.log(category);
 
     const submitHandler = async (e) => {
         e.preventDefault();
 
-        dispatch(updateProduct({
-            _id: productId,
+        dispatch(updateCategory({
+            _id: categoryId,
             name,
-            price,
             image,
-            category,
-            brand,
-            countInStock,
-            description 
         }));
         
     };
@@ -133,13 +109,11 @@ const ProductEditScreen = (props) => {
         
     };
 
-    console.log(category);
-
     return (
         <div>
             <form className="form" onSubmit={submitHandler}>
                 <div>
-                    <h1>Edit Product {productId}</h1>
+                    <h1>Edit Category {categoryId}</h1>
                 </div>
                 {loadingUpdate && <LoadingBox />}
                 {errorUpdate && <MessageBox variant="danger">{errorUpdate}</MessageBox>}
@@ -152,12 +126,8 @@ const ProductEditScreen = (props) => {
                             <input id="name" type="text" placeholder="Enter Name" value={name} onChange={(e) => setName(e.target.value)} />
                         </div>
                         <div>
-                            <label htmlFor="price">Price</label>
-                            <input id="price" type="text" placeholder="Enter Price" value={price} onChange={(e) => setPrice(e.target.value)} />
-                        </div>
-                        <div>
                             <label htmlFor="image">Image</label>
-                            <img src={product.image} alt="image" />
+                            <img src={category.image} alt="image" />
                         </div>
                         <div>
                             <label htmlFor="imageFile">Image File</label>
@@ -166,30 +136,6 @@ const ProductEditScreen = (props) => {
                             <progress value={progress} max="100" />
                             { loadingUpload && <LoadingBox /> }
                             { errorUpload && <MessageBox variant="danger">{errorUpload}</MessageBox> }
-                        </div>
-                        <div>
-                            <label htmlFor="category">Category</label>
-                            {/* <input id="category" type="text" placeholder="Enter Category" value={category} onChange={(e) => setCategory(e.target.value)} /> */}
-                            <select className="form-control" value={category} onChange={(e) => { setCategory(e.target.value) }}>
-                                <option value={product?.category?._id}>Select Category</option>
-                                {
-                                    categories.map((category) => 
-                                        <option key={category._id} value={category._id}>{category.name}</option>
-                                    )
-                                }
-                            </select>
-                        </div>
-                        <div>
-                            <label htmlFor="brand">Brand</label>
-                            <input id="brand" type="text" placeholder="Enter Brand" value={brand} onChange={(e) => setBrand(e.target.value)} />
-                        </div>
-                        <div>
-                            <label htmlFor="countInStock">Count In Stock</label>
-                            <input id="countInStock" type="text" placeholder="Enter Count In Stock" value={countInStock} onChange={(e) => setCountInStock(e.target.value)} />
-                        </div>
-                        <div>
-                            <label htmlFor="description">Description</label>
-                            <textarea id="description" type="text" rows="3" placeholder="Enter Description" value={description} onChange={(e) => setDescription(e.target.value)} />
                         </div>
                         <div>
                             <label/>
@@ -202,4 +148,4 @@ const ProductEditScreen = (props) => {
     )
 }
 
-export default ProductEditScreen
+export default CategoryEditScreen

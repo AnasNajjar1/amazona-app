@@ -1,18 +1,27 @@
 import { applyMiddleware, combineReducers, compose,  createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { cartReducer } from './reducers/cart';
+import { categoryCreateReducer, categoryDeleteReducer, categoryDetailsReducer, categoryListReducer, categoryUpdateReducer } from './reducers/category';
 import { OrderCreateReducer, orderDeleteReducer, orderDeliverReducer, orderDetailsReducer, orderListReducer, orderMineListReducer, orderPayReducer } from './reducers/order';
-import { productCreateReducer, productDeleteReducer, productDetailsReducer, productListReducer, productUpdateReducer } from './reducers/product';
+import { productCategoryListReducer, productCreateReducer, productDeleteReducer, productDetailsReducer, productListReducer, productReviewCreateReducer, productUpdateReducer } from './reducers/product';
 import { userDeleteReducer, userDetailsReducer, userListReducer, userRegisterReducer, userSigninReducer, userTopSellersListReducer, userUpdateProfileReducer, userUpdateReducer } from './reducers/user';
 
 
 const initState = {};
 const reducer = combineReducers({
     productList: productListReducer,
+    productCategoryList: productCategoryListReducer,
     productDetails: productDetailsReducer,
     productCreate: productCreateReducer,
     productUpdate: productUpdateReducer,
     productDelete: productDeleteReducer,
+    productReviewCreate: productReviewCreateReducer,
+
+    categoryList: categoryListReducer,
+    categoryDetails: categoryDetailsReducer,
+    categoryCreate: categoryCreateReducer,
+    categoryUpdate: categoryUpdateReducer,
+    categoryDelete: categoryDeleteReducer,
     
     cart: cartReducer,
 
