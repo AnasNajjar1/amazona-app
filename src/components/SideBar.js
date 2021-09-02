@@ -7,8 +7,8 @@ import { listProductCategories } from '../actions/product';
 
 const SideBar = ({ sidebarIsOpen, setSidebarIsOpen }) => {
 
-    const productCategoryList = useSelector(state => state.productCategoryList);
-    const {loading: loadingCategories , error: errorCategories, categories } = productCategoryList;
+    const categoryList = useSelector(state => state.categoryList);
+    const { loading: loadingCategories, error: errorCategories, categories } = categoryList;
 
     const dispatch = useDispatch();
 
@@ -29,8 +29,8 @@ const SideBar = ({ sidebarIsOpen, setSidebarIsOpen }) => {
                     loadingCategories? <LoadingBox /> : 
                     errorCategories? <MessageBox variant="danger">{errorCategories}</MessageBox> :
                     ( categories.map((c) => (
-                        <li key={c}>
-                            <Link to={`/search/category/${c}`} onClick={() => setSidebarIsOpen(false)}>{c}</Link>
+                        <li key={c._id}>
+                            <Link to={`/search/category/${c._id}`} onClick={() => setSidebarIsOpen(false)}>{c.name}</Link>
                         </li>
                     )))
                 }

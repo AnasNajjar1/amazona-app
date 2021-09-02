@@ -77,7 +77,7 @@ const SearchScreen = (props) => {
                                 </li>
                                 { categories.map(c => (
                                     <li key={c._id}>
-                                        <Link className={ c._id === category? 'active' : ''  } to={getFilterUrl({ category: c._id })}>
+                                        <Link className={ c._id === category? 'active' : ''  } to={getFilterUrl({ category: c._id, page: 1 })}>
                                             {c.name}
                                         </Link>
                                     </li>
